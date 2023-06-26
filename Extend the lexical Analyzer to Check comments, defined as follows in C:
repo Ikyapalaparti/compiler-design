@@ -1,0 +1,47 @@
+%{
+#include<stdio.h>
+%}
+%%
+[/]{1}[/]{1}[a-zA-Z0-9]*  {printf("Single Line Comment", yytext);}
+[/]{1}[*]{1}[a-zA-Z0-9]*[*]{1}[/]{1}  {printf("MultiLine Comment", yytext);}
+%%
+int main()
+{
+printf("\n Enter the input string:");	
+yylex();
+}
+int yywrap()
+{
+return 1;
+}
+	•	Design a lexical Analyzer to find the number of whitespaces and newline characters.
+%{
+#include<stdio.h>
+int sc=0,wc=0,lc=0,cc=0;
+%}
+%%
+[\n] { lc++; cc+=yyleng;}
+[  \t] { sc++; cc+=yyleng;}
+[^\t\n ]+ { wc++;  cc+=yyleng;}
+%%
+
+int main(int argc ,char* argv[])
+{
+	if(argc==2)
+	{
+		yyin=fopen(argv[1],"r");
+	}
+	else
+	{
+		printf("Enter the input\n");
+		yyin=stdin;
+	}
+	yylex();
+	printf("The number of new lines=%d\n",lc);
+	printf("The number of spaces=%d\n",sc);
+
+}
+int yywrap( )
+{
+	return 1;
+}
